@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 use Yii;
 
 /**
@@ -12,6 +14,7 @@ use Yii;
  * @property string  $preview
  * @property string  $date
  * @property integer $author_id
+ * @property Author  $author
  */
 class Book extends \yii\db\ActiveRecord
 {
@@ -26,11 +29,26 @@ class Book extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            [
+                'class'              => TimestampBehavior::className(),
+                'createdAtAttribute' => 'date_create',
+                'updatedAtAttribute' => 'date_update',
+                'value'              => new Expression('NOW()'),
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['name', 'date_create', 'date_update', 'preview', 'date', 'author_id'], 'required'],
-            [['date_create', 'date_update', 'date'], 'safe'],
+            [['name', 'preview', 'date', 'author_id'], 'required'],
+            [['date'], 'safe'],
             [['author_id'], 'integer'],
             [['name', 'preview'], 'string', 'max' => 255],
         ];
@@ -49,6 +67,15 @@ class Book extends \yii\db\ActiveRecord
             'preview'     => 'Превью',
             'date'        => 'Дата выхода книги',
             'author_id'   => 'Автор',
+            'author'      => 'Автор',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthor()
+    {
+        return $this->hasOne(Author::className(), ['id' => 'author_id']);
     }
 }

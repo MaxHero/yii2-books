@@ -49,14 +49,21 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-        <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]); ?>
-        <?= $content; ?>
+        <div class="row">
+            <div class=".col-md-12">
+                <h1><?= Html::encode($this->title); ?></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <?= $content; ?>
+        </div>
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; MaxHero <?= date('Y'); ?></p>
+        <p class="pull-left">&copy; <a href="https://github.com/MaxHero" target="_blank">MaxHero</a> 2016</p>
 
         <p class="pull-right"><?= Yii::powered(); ?></p>
     </div>

@@ -1,34 +1,10 @@
 <?php
 
-$db = require(__DIR__ . '/db.php');
-
-$config = [
-    'id' => 'books-console',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'controllerNamespace' => 'app\commands',
-    'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        'log' => [
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'db' => $db,
+return \yii\helpers\ArrayHelper::merge(
+    require(__DIR__ . '/main.php'),
+    [
+        'id'                  => 'books-console',
+        'controllerNamespace' => 'app\commands',
     ],
-];
-
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-    ];
-}
-
-return $config;
+    require(__DIR__ . '/console-local.php')
+);
